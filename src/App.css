@@ -1,4 +1,6 @@
-
+body {
+  background-image: url(assets/Image.svg);
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;

@@ -121,13 +121,13 @@ export default function App() {
         <h1>My Todo App</h1>
         <hr/>
         <Form onAddTodo={addTodo}></Form>
-        <br/>
-        <button onClick={toggleAllTodos}>
-          {isCheckAll ? "Uncheck all": "Check all"}
-        </button>
+        <div class="container-button">
+          <button onClick={toggleAllTodos}>
+            {isCheckAll ? "Uncheck all": "Check all"}
+          </button>
 
-        <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
-        
+          <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
+        </div>
         <hr/>
         <h2>Todos</h2>
         <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}></TodoList>

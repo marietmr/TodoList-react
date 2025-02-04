@@ -11,7 +11,16 @@ body {
   background-color: darkolivegreen;
 }
 
+form{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.container-button{
+  display: flex;
+  justify-content: center;
+}
 
 @keyframes logo-spin {
   from {

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
+import Calendar from 'react-calendar';
+import './Calendar.css';
 
 function Form({onAddTodo}){
   const [task, setTask] = useState("");
@@ -27,10 +29,12 @@ function Form({onAddTodo}){
     </form>
   )
 }
+
 export default function App() {
     const [todos, setTodos] = useState([]);
     // const [newTodo, setNewTodo] = useState('');
     const [isCheckAll, setIsCheckAll] = useState(false);
+    const [date, setDate] = useState(new Date());
     
 
     useEffect(() => {
@@ -85,6 +89,10 @@ export default function App() {
       setIsCheckAll(!isCheckAll);
     }
 
+    function disabledDates(data) {
+      return data.view === 'month' && data.date.getDay() === 0;
+    }
+
     // const keyDown = (event) => {
     //   if (event.key === 'Enter'){
     //     addTodo(event.target.value);
@@ -108,7 +116,14 @@ export default function App() {
           </button>
             <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
             <button onClick={() => deleteAll()}>Delete all</button>
-          </div>     
+          </div>
+          <Calendar
+            onChange={setDate}
+            value={date}
+            minDate={new Date(2024, 0, 1)}
+            maxDate={new Date(2025, 11, 31)}
+            tileDisabled={disabledDates}
+          ></Calendar>
       </div>
     );
 }

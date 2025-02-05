@@ -40,9 +40,17 @@ export default function App() {
       }
     }, []);
 
+    // useEffect(() => {
+    //   const savedTodos = JSON.parse(window.localStorage.getItem('App'));
+    //   if(savedTodos){
+    //     setTodos(savedTodos);
+    //   }
+    // }, []);
+
     useEffect(() => {
-      localStorage.setItem('App', JSON.stringify(todos));
+      window.localStorage.setItem('App', JSON.stringify(todos));
     }, [todos]);
+
 
     function addTodo(newTask) {
       setTodos([...todos, {id: todos.length, text: newTask, completed: false}])
@@ -59,9 +67,16 @@ export default function App() {
     function deleteTodo(index) {
       setTodos(todos.filter((_, i) => i !== index));
     }
+
+    function deleteAll(index){
+      setTodos(todos.filter((i) => i === index));
+      // setTodos([]);
+      // setIsCheckAll(false);
+    }
   
     function handleCheckedTask() {
       setTodos(todos.filter((todo) => !todo.completed));
+      setIsCheckAll(false);
     }
   
     function toggleAllTodos() {
@@ -70,70 +85,31 @@ export default function App() {
       setIsCheckAll(!isCheckAll);
     }
 
-    const keyDown = (event) => {
-      if (event.key === 'Enter'){
-        addTodo(event.target.value);
-      }
-    }
-
-    // const addTodo = (task) => {
-    // //trim supp les espaces blanc
-    //   if (task.trim() !== "") {
-    //     // setTodos([...todos, {text: newTodo, completed: false}]);
-    //     setTodos([...todos, {id: todos.length, text: task, completed: false}]);
-    //     setNewTodo('');
+    // const keyDown = (event) => {
+    //   if (event.key === 'Enter'){
+    //     addTodo(event.target.value);
     //   }
-    // };
-
-    // const toggleTodo = (index) => {
-    //   //todos.map() parcours toutes les tâches
-    //   const updatedTodos = todos.map((todo, i) =>
-    //   // i === index ? vérifie si l'index correspond
-    //   i === index ? {...todo, completed: !todo.completed} : todo);
-    //   setTodos(updatedTodos);
     // }
-
-    // const deleteTodo = (index) => {
-    //   const updatedTodos = [...todos];
-    //   updatedTodos.splice(index, 1);
-    //   setTodos(updatedTodos);
-    // }
-  // const deleteTodo = (index) => {
-  //   const newTodos = todos.filter((_, i) => i !== index);
-  //   setTodos(newTodos);
-  // }
-
-  // const handleCheckedTask = () => {
-  //   const updatedTodos = todos.filter(todo => !todo.completed);
-  //   setTodos(updatedTodos)
-  //   ///todos((preTask) => preTask.filter((todos) => todos.done === false));
-  // }
-
-  // const toggleAllTodos = () => {
-  //   const newTodos = todos.map(todo => ({...todo, completed: !isCheckAll}));
-  //   setTodos(newTodos);
-  //   setIsCheckAll(!isCheckAll);
-  // };
-
 
   return(
       <div className="app-container">
         <h1>My Todo App</h1>
         <hr/>
         <Form onAddTodo={addTodo}></Form>
-        <div class="container-button">
-          <button onClick={toggleAllTodos}>
-            {isCheckAll ? "Uncheck all": "Check all"}
-          </button>
-
-          <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
-        </div>
+        
         <hr/>
         <h2>Todos</h2>
-        <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo}></TodoList>
+        <TodoList todos={todos} toggleTodo={toggleTodo} deleteTodo={deleteTodo} deleteAll={deleteAll}></TodoList>
         <hr/>
-
+          
+          <div className="container-button">
+            <button onClick={toggleAllTodos}>
+            {isCheckAll ? "Uncheck all": "Check all"}
+          </button>
+            <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
+            <button onClick={() => deleteAll()}>Delete all</button>
+          </div>     
       </div>
     );
 }
-//export default App;
+//echo "* text=auto eol=lf" >> .gitattributes

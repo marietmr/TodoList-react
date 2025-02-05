@@ -112,4 +112,4 @@ export default function App() {
       </div>
     );
 }
-//echo "* text=auto eol=lf" >> .gitattributes
+//git diff --no-renames

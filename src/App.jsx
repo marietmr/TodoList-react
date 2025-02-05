@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
-import Calendar from 'react-calendar';
+// import Calendar from 'react-calendar';
 import './Calendar.css';
+import {Calendar, momentLocalizer} from "react-big-calendar";
+import moment from "moment";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 function Form({onAddTodo}){
   const [task, setTask] = useState("");
@@ -30,12 +33,14 @@ function Form({onAddTodo}){
   )
 }
 
+const localizer = momentLocalizer(moment);
+
 export default function App() {
     const [todos, setTodos] = useState([]);
     // const [newTodo, setNewTodo] = useState('');
     const [isCheckAll, setIsCheckAll] = useState(false);
-    const [date, setDate] = useState(new Date());
-    
+    // const [date, setDate] = useState(new Date());
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
       const storedTodos = localStorage.getItem('App');
@@ -89,9 +94,17 @@ export default function App() {
       setIsCheckAll(!isCheckAll);
     }
 
-    function disabledDates(data) {
-      return data.view === 'month' && data.date.getDay() === 0;
-    }
+    // function disabledDates(data) {
+    //   return data.view === 'month' && data.date.getDay() === 0;
+    // }
+
+    const handleSelectSlot = ({start, end}) => {
+      const title = window.prompt("New Event name");
+      if (title){
+        setEvents([...events, {start, end, title}])
+      }
+    };
+
 
     // const keyDown = (event) => {
     //   if (event.key === 'Enter'){
@@ -118,11 +131,13 @@ export default function App() {
             <button onClick={() => deleteAll()}>Delete all</button>
           </div>
           <Calendar
-            onChange={setDate}
-            value={date}
-            minDate={new Date(2024, 0, 1)}
-            maxDate={new Date(2025, 11, 31)}
-            tileDisabled={disabledDates}
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{height: 500}}
+            selectable
+            onSelectSlot={handleSelectSlot}
           ></Calendar>
       </div>
     );

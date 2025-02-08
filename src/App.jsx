@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
-// import Calendar from 'react-calendar';
-import './Calendar.css';
-import {Calendar, momentLocalizer} from "react-big-calendar";
-import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css";
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
+// function pickDate() {
+//   const [startDate, setStartDate] = useState(new Date());
+
+//   return (
+//     <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}></DatePicker>
+//   )
+// }
+
 
 function Form({onAddTodo}){
   const [task, setTask] = useState("");
@@ -33,14 +39,13 @@ function Form({onAddTodo}){
   )
 }
 
-const localizer = momentLocalizer(moment);
 
 export default function App() {
     const [todos, setTodos] = useState([]);
     // const [newTodo, setNewTodo] = useState('');
     const [isCheckAll, setIsCheckAll] = useState(false);
     // const [date, setDate] = useState(new Date());
-    const [events, setEvents] = useState([]);
+    const [startDate, setStartDate] = useState(new Date());
 
     useEffect(() => {
       const storedTodos = localStorage.getItem('App');
@@ -94,23 +99,6 @@ export default function App() {
       setIsCheckAll(!isCheckAll);
     }
 
-    // function disabledDates(data) {
-    //   return data.view === 'month' && data.date.getDay() === 0;
-    // }
-
-    const handleSelectSlot = ({start, end}) => {
-      const title = window.prompt("New Event name");
-      if (title){
-        setEvents([...events, {start, end, title}])
-      }
-    };
-
-
-    // const keyDown = (event) => {
-    //   if (event.key === 'Enter'){
-    //     addTodo(event.target.value);
-    //   }
-    // }
 
   return(
       <div className="app-container">
@@ -129,16 +117,9 @@ export default function App() {
           </button>
             <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
             <button onClick={() => deleteAll()}>Delete all</button>
-          </div>
-          <Calendar
-            localizer={localizer}
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            style={{height: 500}}
-            selectable
-            onSelectSlot={handleSelectSlot}
-          ></Calendar>
+            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}/>
+            </div>
+
       </div>
     );
 }

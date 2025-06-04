@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
-// import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import CalendarComponent from "./components/FullCalendar";
 
-// function pickDate() {
-//   const [startDate, setStartDate] = useState(new Date());
-
-//   return (
-//     <DatePicker selected={startDate} onChange={(date) => setStartDate(date)}></DatePicker>
-//   )
-// }
 
 function Form({ onAddTodo }) {
   const [task, setTask] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -23,6 +17,7 @@ function Form({ onAddTodo }) {
 
     onAddTodo(task);
     setTask("");
+    setStartDate(new Date());
   }
 
   return (
@@ -33,6 +28,12 @@ function Form({ onAddTodo }) {
         placeholder="Write a new todo"
         value={task}
         onChange={(e) => setTask(e.target.value)}
+      />  
+      <DatePicker
+        selected={startDate}
+        onChange={(date) => setStartDate(date)}
+        dateFormat={"dd/MM/YYYY HH:mm"}
+        showTimeSelect
       />
       <button type="submit">Add todo</button>
     </form>
@@ -41,32 +42,31 @@ function Form({ onAddTodo }) {
 
 export default function App() {
   const [todos, setTodos] = useState([]);
-  // const [newTodo, setNewTodo] = useState('');
   const [isCheckAll, setIsCheckAll] = useState(false);
-  // const [date, setDate] = useState(new Date());
-  const [startDate, setStartDate] = useState(new Date());
 
-
-  useEffect(() => {
-    const storedTodos = localStorage.getItem("App");
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
-    }
-  }, []);
 
   // useEffect(() => {
-  //   const savedTodos = JSON.parse(window.localStorage.getItem('App'));
-  //   if(savedTodos){
-  //     setTodos(savedTodos);
+  //   const storedTodos = localStorage.getItem('App');
+  //   if (storedTodos) {
+  //     setTodos(JSON.parse(storedTodos))
   //   }
   // }, []);
 
-  useEffect(() => {
-    window.localStorage.setItem("App", JSON.stringify(todos));
-  }, [todos]);
+  // useEffect(() => {
+  //   localStorage.setItem("App", JSON.stringify(todos))
+  // }, [todos])
 
-  function addTodo(newTask) {
-    setTodos([...todos, { id: todos.length, text: newTask, completed: false }]);
+
+  function addTodo(newTodo) {
+    setTodos([
+      ...todos,
+      {
+        id: todos.length,
+        text: newTodo,
+        completed: false,
+        date: new Date().toISOString(),
+      }
+    ])
   }
 
   function toggleTodo(index) {
@@ -119,13 +119,9 @@ export default function App() {
         </button>
         <button onClick={() => handleCheckedTask()}>Delete checked todo</button>
         <button onClick={() => deleteAll()}>Delete all</button>
-        {/* <DatePicker
-          selected={startDate}
-          onChange={(date) => setStartDate(date)}
-        /> */}
       </div>
       <hr />
-      <CalendarComponent todos={todos}/>
+      {/* <CalendarComponent todos={todos}/> */}
     </div>
   );
 }

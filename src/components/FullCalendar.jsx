@@ -11,63 +11,16 @@ import interactionPlugin from "@fullcalendar/interaction" //drag and drop
 
 import "../App.css"
 
-export default function CalendarComponent(){
-    const [schedules, setSchedules] = useState([]);
-    const [todos, setTodos] = useState([]);
-    const [events, setEvents] = useState([]);
-
-    useEffect(() => {
-        fetch('/todos.json')
-            .then((response) => response.json())
-            .then((data) => setTodos(data))
-            .catch((error) => console.error('Erreur lors du chargement des to do:', error))
-    }, [])
-
-    const evenement = todos.map((todo, index) => ({
-        id: index.toString(),
+export default function CalendarComponent( { todos }){
+    const events = todos
+        .filter(todo => todo.date)
+        .map((todo) => ({
+        id: todo.id.toString(),
         title: todo.text,
-        start: new Date(),
-        allDay: false,
-    }))
-
-    const handleDateSelect = (selectInfo) => {
-        const title = prompt("Titre de la tâche ?");
-        const calendarApi = selectInfo.view.calendar;
-        
-        calendarApi.unselect();
-        
-        if(title) {
-            const newEvent = {
-                id: String(Date.now()),
-                title,
-                start: selectInfo.startStr,
-                end: selectInfo.endStr,
-                allDay: selectInfo.allDay,
-            };
-            setEvents([...events, newEvent]);
-        };
-    };
-
-    const handleEventClick = (clickInfo) => {
-        if(confirm(`Supprimer "${clickInfo.event.title}" ?`)){
-            setEvents(events.filter((e) => e.id !== clickInfo.event.id));
-        }
-    };
-
-    const handleEventChange = (changeInfo) => {
-        const updatedEvent = changeInfo.event;
-        setEvents((prev) =>
-            prev.map((e) =>
-                e.id === updatedEvent.id
-            ? {
-                ...e,
-                start: updatedEvent.startStr,
-                end: updatedEvent.endStr,
-            }
-            : e
-            )
-        );
-    };
+        start: todo.date,
+        end: new Date(new Date(todo.date).getTime() + 30 * 60 * 1000),
+        allDay: false, 
+    }));
 
     return(
         <div>
@@ -75,12 +28,9 @@ export default function CalendarComponent(){
             <FullCalendar
                 plugins={[daygridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
-                events={[...evenement, ...events]}
-                editable={true}
-                selectable={true}
-                select={handleDateSelect}
-                eventClick={handleEventClick}
-                eventChange={handleEventChange}
+                events={events}
+                editable={false}
+                selectable={false}
             />
         </div>
     );

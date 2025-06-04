@@ -9,8 +9,17 @@ const TodoList = ({ todos, toggleTodo, deleteTodo}) => {
                         type="checkbox"
                         checked={todo.completed}
                         onChange={() => toggleTodo(index)}
-                    ></input>
-                    {todo.text}
+                    />
+                    <span style={{textDecoration: todo.completed ? "line-through" : "none"}}>
+                        {todo.text}
+                    </span>
+
+                    {todo.date && (
+                        <span style={{ marginLeft: "1rem", color: "#888"}}>
+                            ({new Date(todo.date).toLocaleDateString()})
+                        </span>
+                    )}
+
                     {todo.completed && (
                         <button onClick={() => deleteTodo(index)}>Delete</button>
                     )}

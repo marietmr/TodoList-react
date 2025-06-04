@@ -13,25 +13,22 @@ import "../App.css"
 
 export default function CalendarComponent(){
     const [schedules, setSchedules] = useState([]);
+    const [todos, setTodos] = useState([]);
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
-        fetch("/.netlify/functions/getTodos")
-            .then((res) => res.json())
-            .then((data) => {
-                const formatted = data.map(todo => ({
-                    id: todo.id,
-                    calendarId: "1",
-                    title: todo.title,
-                    category: "time",
-                    isVisible: true,
-                    start: new Date(todo.date),
-                    end: new Date(new Date(todo.date).getTime() + 30 * 60 * 1000)
-                }));
-                setSchedules(formatted);
-            })
-    }, []);
+        fetch('/todos.json')
+            .then((response) => response.json())
+            .then((data) => setTodos(data))
+            .catch((error) => console.error('Erreur lors du chargement des to do:', error))
+    }, [])
 
-    const [events, setEvents] = useState([]);
+    const evenement = todos.map((todo, index) => ({
+        id: index.toString(),
+        title: todo.text,
+        start: new Date(),
+        allDay: false,
+    }))
 
     const handleDateSelect = (selectInfo) => {
         const title = prompt("Titre de la tâche ?");
@@ -71,15 +68,16 @@ export default function CalendarComponent(){
             )
         );
     };
+
     return(
         <div>
             <h2 className="fullcalendar-h2">Agenda</h2>
             <FullCalendar
                 plugins={[daygridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
+                events={[...evenement, ...events]}
                 editable={true}
                 selectable={true}
-                events={events}
                 select={handleDateSelect}
                 eventClick={handleEventClick}
                 eventChange={handleEventChange}

@@ -46,6 +46,7 @@ export default function App() {
   // const [date, setDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
 
+
   useEffect(() => {
     const storedTodos = localStorage.getItem("App");
     if (storedTodos) {
@@ -124,7 +125,7 @@ export default function App() {
         /> */}
       </div>
       <hr />
-      <CalendarComponent/>
+      <CalendarComponent todos={todos}/>
     </div>
   );
 }

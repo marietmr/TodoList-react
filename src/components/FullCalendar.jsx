@@ -4,9 +4,12 @@ import daygridPlugin from "@fullcalendar/daygrid" //vue par mois
 import timeGridPlugin from "@fullcalendar/timegrid" // vue par semain/joour
 import interactionPlugin from "@fullcalendar/interaction" //drag and drop
 
-// import '@fullcalendar/core/index.css'
-// import '@fullcalendar/daygrid/index.css'
-// import '@fullcalendar/timegrid/index.css'
+// import '@fullcalendar/core/index.global.css';
+// import '@fullcalendar/daygrid/index.global.css';
+// import '@fullcalendar/timegrid/index.global.css';
+
+
+import "../App.css"
 
 export default function CalendarComponent(){
     const [schedules, setSchedules] = useState([]);
@@ -70,7 +73,7 @@ export default function CalendarComponent(){
     };
     return(
         <div>
-            <h2>Full calendar</h2>
+            <h2 className="fullcalendar-h2">Agenda</h2>
             <FullCalendar
                 plugins={[daygridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"

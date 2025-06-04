@@ -11,18 +11,18 @@ body {
   background-color: darkolivegreen;
 }
 
-h1{
+h1 {
   margin-top: 2%;
   margin-bottom: 2%;
 }
 
-form{
+form {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.container-button{
+.container-button {
   display: flex;
   justify-content: center;
 }
@@ -50,36 +50,42 @@ form{
   color: #888;
 }
 
-input{
+input {
   margin-top: 2%;
 }
-input:hover{
+input:hover {
   border: solid darkolivegreen;
 }
 
-button{
+button {
   background-color: rgb(49, 62, 27);
   color: white;
   margin-top: 3%;
   margin-right: 1%;
 }
 
-button:hover{
+button:hover {
   font-size: 15px;
 }
 
-input{
-  padding: 5px ;
-
+input {
+  padding: 5px;
 }
-li{
+li {
   list-style-type: none;
 }
 
-hr{
+hr {
   color: white;
 }
 
 .app-container {
   color: white;
+}
+
+#fc-dom-76{
+  font-size: medium;
+}
+.fullcalendar-h2{
+  margin: 0;
 }

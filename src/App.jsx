@@ -122,8 +122,9 @@ export default function App() {
           selected={startDate}
           onChange={(date) => setStartDate(date)}
         /> */}
-        <CalendarComponent/>
       </div>
+      <hr />
+      <CalendarComponent/>
     </div>
   );
 }
